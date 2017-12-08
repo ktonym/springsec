@@ -1,0 +1,28 @@
+app:
+  name: rhino-jwt
+
+jwt:
+  header: Authorization
+  expires_in: 600 # 10 minutes
+  mobile_expires_in: 600 # 10 minutes
+  secret: theGenerics
+
+spring:
+  jpa:
+    hibernate:
+      show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ktonym
+    password: TheMightyRhinoceros
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
