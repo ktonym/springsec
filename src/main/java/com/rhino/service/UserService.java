@@ -103,8 +103,8 @@ public class UserService implements IUserService {
         } else {
             User user = repo.findByEmail(email);
             if(user==null) return false;
-            String token = tokenHelper.generateToken(user.getUsername(),device);
-            String path = "http://localhost:3000/auth/validate_token/" + token;
+            String token = tokenHelper.generateTimeToken(user.getUsername(),device,3600);
+            String path = "http://localhost:3000/reset_password/" + token;
             /*StringBuilder builder = new StringBuilder("<html><body>");
             builder.append("<p>Hi ").append("<bold>").append(user.getFirstName()).append("</bold>,</p><br/>")
                     .append("<p> You have requested for a password reset. Please click on the link below to reset your password.</p><br/>")

@@ -148,17 +148,21 @@ public class AuthenticationController extends AbstractHandler{
         public String email;
     }
 
-    @RequestMapping(value = "/validate_token/{token}", method = RequestMethod.GET)
-    public ResponseEntity<?> confirmToken(@PathVariable(value = "token") String token, Device device){
+    @RequestMapping(value = "/validate_token", method = RequestMethod.POST)
+    public ResponseEntity<?> validateToken(@RequestBody TokenRequest request, Device device){
         Map<String,Object> result = new HashMap<>();
         result.put("result", true);
-        System.out.println(token);
-        if(tokenHelper.validateToken(token)){
+        System.out.println(request.token);
+        if(tokenHelper.validateToken(request.token)){
             return ResponseEntity.ok(result);
         } else {
             JsonErrorState jsonErrorState = new JsonErrorState("Something went wrong");
             return ResponseEntity.status(401).body(jsonErrorState);
         }
 
+    }
+
+    static class TokenRequest {
+        public String token;
     }
 }

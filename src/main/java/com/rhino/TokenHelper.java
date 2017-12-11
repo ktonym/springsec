@@ -1,11 +1,8 @@
 package com.rhino;
 
 import com.rhino.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import com.rhino.common.TimeProvider;
-import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
@@ -108,6 +105,18 @@ public class TokenHelper {
                 .compact();
     }
 
+    public String generateTimeToken(String username, Device device, int expiresIn){
+        String audience = generateAudience(device);
+        return Jwts.builder()
+                .setIssuer(APP_NAME)
+                .setSubject(username)
+                .setAudience(audience)
+                .setIssuedAt(timeProvider.now())
+                .setExpiration(new Date(timeProvider.now().getTime() + expiresIn * 1000))
+                .signWith(SIGNATURE_ALGORITHM,SECRET)
+                .compact();
+    }
+
     private String generateAudience(Device device) {
         String audience = AUDIENCE_UNKNOWN;
         if (device.isNormal()) {
@@ -158,7 +167,9 @@ public class TokenHelper {
         try{
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
             return true;
-        } catch (SignatureException e){
+        } catch (SignatureException se){
+            return false;
+        } catch (ExpiredJwtException eje){
             return false;
         }
     } 

@@ -31,3 +31,6 @@ export const logout = () => dispatch => {
 
 export const resetPasswordRequest = (data) => dispatch =>
     api.user.resetPasswordRequest(data);
+
+export const validateToken = (token) => () =>
+    api.user.validateToken(token);
