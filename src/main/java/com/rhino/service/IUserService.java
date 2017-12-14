@@ -20,7 +20,7 @@ public interface IUserService {
     List<User> findAll(); // throws AccessDeniedException;
     @PreAuthorize("isAuthenticated()")
     User whoAmI(String username);
-    Boolean changePassword(Long id,String password);
+    Boolean changePassword(String token,String password);
     Boolean setPasswordResetToken(Long id,String token);
     Boolean resetPasswordRequest(String email,Device device);
 }

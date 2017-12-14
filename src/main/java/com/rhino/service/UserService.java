@@ -60,13 +60,15 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public Boolean changePassword(Long id, String password) {
+    public Boolean changePassword(String token, String password) {
 
-        if(id<=0 || password.trim().isEmpty() || password == null){
+        if(token.trim().isEmpty() || token == null || password.trim().isEmpty() || password == null){
             return false;
         }
 
-        User user = repo.findOne(id);
+        String username = tokenHelper.getUsernameFromToken(token);
+        System.out.println("Username from token: " + username);
+        User user = repo.findUserByUsernameAndPasswordResetToken(username,token);
         if(user==null){
             return false;
         } else {

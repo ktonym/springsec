@@ -47,14 +47,14 @@ public class AuthenticationController extends AbstractHandler{
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    /*@Autowired
+    private CustomUserDetailsService userDetailsService;*/
 
     @Autowired
     private DeviceProvider deviceProvider;
 
-    @Autowired
-    private IMailSenderService mailSender;
+    /*@Autowired
+    private IMailSenderService mailSender;*/
 
     @Autowired
     private IUserService userService;
@@ -77,17 +77,18 @@ public class AuthenticationController extends AbstractHandler{
         User user = (User)authentication.getPrincipal();
         String jws = tokenHelper.generateToken( user.getUsername(), device);
         int expiresIn = tokenHelper.getExpiredIn(device);
+        String email = user.getEmail();
 
         // Return the token
         //return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
 
         Map<String,Object> result = new HashMap<>();
-        result.put("user",new UserTokenState(jws,expiresIn));
-        try {
+        result.put("user",new UserTokenState(jws,expiresIn,email));
+        /*try {
             mailSender.sendEmail("ktonym@gmail.com","Hi there!!","Testing");
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         return ResponseEntity.accepted().body(result);
 
     }
@@ -101,27 +102,29 @@ public class AuthenticationController extends AbstractHandler{
         Device device = deviceProvider.getCurrentDevice(request);
 
         if(authToken != null && principal != null){
+            User user = (User) principal;
             //TODO check user password last update
             String refreshedToken = tokenHelper.refreshToken(authToken,device);
             int expiresIn = tokenHelper.getExpiredIn(device);
-            return ResponseEntity.ok(new UserTokenState(refreshedToken,expiresIn));
+            return ResponseEntity.ok(new UserTokenState(refreshedToken,expiresIn,user.getEmail()));
         } else {
             UserTokenState userTokenState = new UserTokenState();
             return ResponseEntity.accepted().body(userTokenState);
         }
     }
 
-    @RequestMapping(value = "/changepassword",method = RequestMethod.POST)
+    @RequestMapping(value = "/change_password",method = RequestMethod.POST)
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger){
-        userDetailsService.changePassword(passwordChanger.oldPassword,passwordChanger.newPassword);
 
-        Map<String,String> result = new HashMap<>();
-        result.put("result","success");
+        userService.changePassword(passwordChanger.token,passwordChanger.newPassword);
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("success",true);
         return ResponseEntity.accepted().body(result);
     }
 
     static class PasswordChanger {
-        public String oldPassword;
+        public String token;
         public String newPassword;
     }
 
@@ -130,8 +133,8 @@ public class AuthenticationController extends AbstractHandler{
                                                   Device device){
 
         //JsonObject jsonObject = parseJsonObject(email);
-        System.out.println("Web method email ");
-        System.out.println(emailRequest.email);
+        /*System.out.println("Web method email ");
+        System.out.println(emailRequest.email);*/
         Map<String,Object> result = new HashMap<>();
         if (userService.resetPasswordRequest(emailRequest.email,device)){
             result.put("success", true);
@@ -152,7 +155,7 @@ public class AuthenticationController extends AbstractHandler{
     public ResponseEntity<?> validateToken(@RequestBody TokenRequest request, Device device){
         Map<String,Object> result = new HashMap<>();
         result.put("result", true);
-        System.out.println(request.token);
+        //System.out.println(request.token);
         if(tokenHelper.validateToken(request.token)){
             return ResponseEntity.ok(result);
         } else {

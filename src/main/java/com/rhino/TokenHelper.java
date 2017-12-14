@@ -163,7 +163,7 @@ public class TokenHelper {
     }
 
     
-   public Boolean validateToken(String token){
+    public Boolean validateToken(String token){
         try{
             Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
             return true;

@@ -1,5 +1,6 @@
 package com.rhino.service;
 
+import com.rhino.TokenHelper;
 import com.rhino.model.User;
 import com.rhino.repo.UserRepository;
 import org.apache.commons.logging.Log;
@@ -30,6 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenHelper tokenHelper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

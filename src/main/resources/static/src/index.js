@@ -27,6 +27,7 @@ if(localStorage.rhinoJWT){
     const payload = decode(localStorage.rhinoJWT);
     console.log(payload);
     const user = { access_token: localStorage.rhinoJWT};
+    //const user = localStorage.rhinoJWT; // need email in state.user, not just access_token
     store.dispatch(userLoggedIn(user));
 }
 // disabled run the saga
