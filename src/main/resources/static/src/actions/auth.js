@@ -20,7 +20,10 @@ export const userLoggedOut = () => ({
 export const loginReq = (credentials) => dispatch =>
     api.user.login(credentials).then(user =>
     {
-        localStorage.rhinoJWT = user.access_token; //removed user.access_token
+        console.log(user);
+        localStorage.setItem('rhinoJWT',JSON.stringify(user));
+        //localStorage.rhinoJWT = user.access_token; //removed user.access_token
+        //localStorage.rhinoJWT.email = user.email;
         dispatch(userLoggedIn(user));
     });
 

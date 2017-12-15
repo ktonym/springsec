@@ -26,7 +26,10 @@ const store = createStore(
 if(localStorage.rhinoJWT){
     const payload = decode(localStorage.rhinoJWT);
     console.log(payload);
-    const user = { access_token: localStorage.rhinoJWT};
+    const user = JSON.parse(localStorage.getItem('rhinoJWT'));
+    /*const user = { access_token: localStorage.rhinoJWT.access_token,
+        email: localStorage.rhinoJWT.email,
+        expires_in: localStorage.rhinoJWT.expires_in };*/
     //const user = localStorage.rhinoJWT; // need email in state.user, not just access_token
     store.dispatch(userLoggedIn(user));
 }

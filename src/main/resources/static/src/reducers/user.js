@@ -9,6 +9,6 @@ export default function user(state = {}, action = {}) {
     case types.USER_LOGOUT:
         return {};
     default:
-        return state;
+        return state || {};
     }
 }

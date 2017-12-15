@@ -105,7 +105,8 @@ public class UserService implements IUserService {
         } else {
             User user = repo.findByEmail(email);
             if(user==null) return false;
-            String token = tokenHelper.generateTimeToken(user.getUsername(),device,3600);
+            int expiry = 60 * 60 * 24; // 24 hour expiry duration
+            String token = tokenHelper.generateTimeToken(user.getUsername(),device,expiry);
             String path = "http://localhost:3000/reset_password/" + token;
             /*StringBuilder builder = new StringBuilder("<html><body>");
             builder.append("<p>Hi ").append("<bold>").append(user.getFirstName()).append("</bold>,</p><br/>")
