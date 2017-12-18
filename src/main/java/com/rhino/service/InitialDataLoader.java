@@ -1,8 +1,10 @@
 package com.rhino.service;
 
 import com.rhino.model.Authority;
+import com.rhino.model.Client;
 import com.rhino.model.User;
 import com.rhino.repo.AuthorityRepository;
+import com.rhino.repo.ClientRepo;
 import com.rhino.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -10,6 +12,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -27,6 +30,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     @Autowired
     private AuthorityRepository authorityRepo;
 
+    @Autowired
+    private ClientRepo clientRepo;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -37,6 +43,18 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         Authority role_user = createAuthorityIfNotFound("ROLE_USER");
         addUserIfNotInRole(admin,role_admin);
         addUserIfNotInRole(admin,role_user);
+
+        Client client1 = new Client();
+        client1.setJoinDate(LocalDate.now());
+        client1.setClientName("Test Client 1");
+        client1.setPin("A006008976G");
+        clientRepo.save(client1);
+
+        Client client2 = new Client();
+        client2.setJoinDate(LocalDate.now());
+        client2.setClientName("Test Client 2");
+        client2.setPin("P088989805K");
+        clientRepo.save(client2);
     }
 
     @Transactional

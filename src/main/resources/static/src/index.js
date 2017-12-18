@@ -26,7 +26,6 @@ const store = createStore(
 if(localStorage.rhinoJWT){
     const payload = decode(localStorage.rhinoJWT);
     console.log(payload);
-    const user = JSON.parse(localStorage.getItem('rhinoJWT'));
     /*const user = { access_token: localStorage.rhinoJWT.access_token,
         email: localStorage.rhinoJWT.email,
         expires_in: localStorage.rhinoJWT.expires_in };*/

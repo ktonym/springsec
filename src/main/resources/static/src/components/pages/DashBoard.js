@@ -10,14 +10,14 @@ class DashBoard extends Component{
         const {clients} = this.props;
         return (
             <div>
-                <AddClientCtA/>
+                { clients.length === 0 && <AddClientCtA/> }
             </div>
         );
     }
 }
 
-const mapStateToProps = ({clients}) => ({
-    clients
+const mapStateToProps = (state) => ({
+    clients: allClientsSelector(state)
 });
 
 DashBoard.propTypes = {

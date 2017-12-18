@@ -6,6 +6,11 @@ export default function clients(state = {}, action = {}) {
         case types.ADD_CLIENT:
             let newClient = Object.assign({}, action.data);
             return state ? state.concat([newClient]) : [newClient];
+        case types.CLIENT_ADDED:
+            let addedClient = Object.assign({}, action.data);
+            return state ? state.concat([addedClient]) : [addedClient];
+        case types.CLIENT_FAILED:
+            return state;
         default:
             return state || [];
     }

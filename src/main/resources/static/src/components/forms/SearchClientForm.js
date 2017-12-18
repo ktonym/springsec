@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Form, Dropdown } from "semantic-ui-react";
+import { searchClient } from "../../actions/client";
 
 class SearchClientForm extends Component{
     state = {
@@ -7,7 +8,7 @@ class SearchClientForm extends Component{
         loading: false,
         options: [],
         clients: {}
-    }
+    };
 
     onSearchChange = (e, data) => {
         clearTimeout(this.timer);
@@ -15,12 +16,13 @@ class SearchClientForm extends Component{
             query: data
         });
         this.timer = setTimeout(this.fetchOptions, 1000);
-    }
+    };
     
     fetchOptions = () => {
         if(!this.state.query) return;
         this.setState({ loading: true});
-    }
+        searchClient(this.state.query);
+    };
 
     render(){
         return (

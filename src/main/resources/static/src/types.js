@@ -4,3 +4,5 @@ export const USER_LOGIN_FAILED = "USER_LOGIN_FAILED";
 export const USER_LOGOUT = "USER_LOGOUT";
 export const ADD_CLIENT = "ADD_CLIENT";
 export const DELETE_CLIENT = "DELETE_CLIENT";
+export const CLIENT_ADDED = "CLIENT_ADDED";
+export const CLIENT_FAILED = "CLIENT_FAILED";

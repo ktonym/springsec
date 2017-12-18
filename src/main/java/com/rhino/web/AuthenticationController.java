@@ -59,7 +59,7 @@ public class AuthenticationController extends AbstractHandler{
     @Autowired
     private IUserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                        HttpServletResponse response, Device device
     ) throws AuthenticationException, IOException{
@@ -93,7 +93,7 @@ public class AuthenticationController extends AbstractHandler{
 
     }
 
-    @RequestMapping(value = "/refresh", method = RequestMethod.POST)
+    @PostMapping(value = "/refresh")
     public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request,
                                                         //HttpServletResponse response,
                                                         Principal principal){
@@ -113,7 +113,7 @@ public class AuthenticationController extends AbstractHandler{
         }
     }
 
-    @RequestMapping(value = "/change_password",method = RequestMethod.POST)
+    @PostMapping(value = "/change_password")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger){
 
         userService.changePassword(passwordChanger.token,passwordChanger.newPassword);
@@ -128,7 +128,7 @@ public class AuthenticationController extends AbstractHandler{
         public String newPassword;
     }
 
-    @RequestMapping(value = "/reset_password_request", method = RequestMethod.POST)
+    @PostMapping(value = "/reset_password_request")
     public ResponseEntity<?> resetPasswordRequest(@RequestBody EmailRequest emailRequest,
                                                   Device device){
 
@@ -151,7 +151,7 @@ public class AuthenticationController extends AbstractHandler{
         public String email;
     }
 
-    @RequestMapping(value = "/validate_token", method = RequestMethod.POST)
+    @PostMapping(value = "/validate_token")
     public ResponseEntity<?> validateToken(@RequestBody TokenRequest request, Device device){
         Map<String,Object> result = new HashMap<>();
         result.put("result", true);
