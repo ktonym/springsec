@@ -8,7 +8,10 @@ class ClientForm extends Component{
 
     state = {
         data: {
-            email : ''
+            clientId: this.props.client.clientId,
+            clientName: this.props.client.clientName,
+            pin: this.props.client.pin,
+            joinDate: this.props.client.joinDate
         },
         loading: false,
         errors: {}
@@ -49,18 +52,42 @@ class ClientForm extends Component{
                         <p>{errors.message}</p>
                     </Message>
                 }
-                <Form.Field error={!!errors.email}>
-                    <label htmlFor="email">email</label>
+
+                <Form.Field error={!!errors.clientId}>
+                    <label htmlFor="email">clientId</label>
                     <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="email"
-                        value={data.email}
+                        type="numberfield" id="clientId" name="clientId" placeholder="clientId"
+                        value={data.clientId}
                         onChange={this.onChange}
                     />
                 </Form.Field>
-                { errors.email && <InlineError text={errors.email} /> }
+                <Form.Field error={!!errors.clientName}>
+                    <label htmlFor="email">clientName</label>
+                    <input
+                        type="textfield" id="clientName" name="clientName" placeholder="clientName"
+                        value={data.clientName}
+                        onChange={this.onChange}
+                    />
+                </Form.Field>
+                { errors.clientName && <InlineError text={errors.clientName} /> }
+                <Form.Field error={!!errors.pin}>
+                    <label htmlFor="email">pin</label>
+                    <input
+                        type="text" id="pin" name="pin" placeholder="pin"
+                        value={data.pin}
+                        onChange={this.onChange}
+                    />
+                </Form.Field>
+                { errors.pin && <InlineError text={errors.pin} /> }
+                <Form.Field error={!!errors.joinDate}>
+                    <label htmlFor="email">joinDate</label>
+                    <input
+                        type="datefield" id="joinDate" name="joinDate" placeholder="joinDate"
+                        value={data.joinDate}
+                        onChange={this.onChange}
+                    />
+                </Form.Field>
+                { errors.joinDate && <InlineError text={errors.joinDate} /> }
                 <Button primary>ClientForm</Button>
             </Form>
         );
@@ -68,7 +95,13 @@ class ClientForm extends Component{
 }
 
 ClientForm.propTypes = {
-    submit: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired,
+    client: PropTypes.shape({
+        clientId: PropTypes.number.isRequired,
+        clientName: PropTypes.string.isRequired,
+        pin: PropTypes.string.isRequired,
+        joinDate: PropTypes.instanceOf(Date)
+    }).isRequired
 };
 
 export default ClientForm;

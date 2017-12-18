@@ -9,7 +9,7 @@ export default {
     },
     client: {
         create: (data) => axios.post("/client/create", data).then(res => res.data),
-        search: (query) => axios.get(`/client/search?q=${query}`)
+        search: (query) => axios.get("/client/search?q=test")
             .then(res => res.data)
     }
 };
