@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import { Form, Dropdown } from "semantic-ui-react";
-import { searchClient } from "../../actions/client";
+// import { searchClient } from "../../actions/client";
 import axios from "axios";
 
 class SearchClientForm extends Component{
@@ -14,8 +14,9 @@ class SearchClientForm extends Component{
 
     onSearchChange = (e, data) => {
         clearTimeout(this.timer);
+        console.log(data.searchQuery);
         this.setState({
-            query: data
+            query: data.searchQuery
         });
         this.timer = setTimeout(this.fetchOptions, 1000);
     };
@@ -26,7 +27,7 @@ class SearchClientForm extends Component{
         this.setState({ loading: true});
         //searchClient(this.state.query);
         axios.get(`/client/search?q=${this.state.query}`)
-            .then(res=>res.data.clients)
+            .then(res=>res.data)
             .then(clients => {
                 const options = [];
                 const clientsHash = {};
@@ -47,7 +48,7 @@ class SearchClientForm extends Component{
         console.log(data);
         this.setState({ query: data.value });
         this.props.onClientSelect(this.state.clients[data.value])
-    }
+    };
 
     render(){
         return (

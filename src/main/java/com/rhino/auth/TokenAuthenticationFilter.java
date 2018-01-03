@@ -1,6 +1,7 @@
 package com.rhino.auth;
 
 import com.rhino.TokenHelper;
+import com.rhino.model.Authority;
 import com.rhino.model.User;
 import com.rhino.service.CustomUserDetailsService;
 import org.apache.commons.logging.Log;
@@ -8,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -43,11 +45,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             FilterChain chain
     ) throws IOException, ServletException {
 
-        System.out.println("Inside doFilterInternal");
+        System.out.println("Inside TokenAuthenticationFilter.doFilterInternal()");
 
         String username;
         String authToken = tokenHelper.getToken(request);
-        System.out.println("Authtoken :" + authToken);
+        System.out.println("Authtoken : " + authToken);
 
         if (authToken != null) {
             // get username from token
@@ -55,6 +57,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (username != null) {
                 // get user
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                /*System.out.println("User details");
+                for (GrantedAuthority auth :
+                        userDetails.getAuthorities()) {
+                    System.out.println(auth.getAuthority());
+                }*/
+                //System.out.println(userDetails.getAuthorities());
                 if (tokenHelper.validateToken(authToken, userDetails)) {
                     // create authentication
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);

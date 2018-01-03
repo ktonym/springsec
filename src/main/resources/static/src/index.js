@@ -12,6 +12,7 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import rootReducer from "./rootReducer";
 import {userLoggedIn} from "./actions/auth";
+import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 // import rootSaga from "./sagas";
 
 
@@ -31,6 +32,7 @@ if(localStorage.rhinoJWT){
         expires_in: localStorage.rhinoJWT.expires_in };*/
     const user = JSON.parse(localStorage.getItem('rhinoJWT'));
     //const user = localStorage.rhinoJWT; // need email in state.user, not just access_token
+    setAuthorizationHeader(user.access_token);
     store.dispatch(userLoggedIn(user));
 }
 // disabled run the saga

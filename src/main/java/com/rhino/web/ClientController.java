@@ -4,6 +4,7 @@ import com.rhino.model.Client;
 import com.rhino.service.IClientService;
 import com.rhino.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by user on 16/12/2017.
  */
-@Controller
+@RestController
 @RequestMapping(value = "/client", produces = "application/json")
 public class ClientController extends AbstractHandler {
 

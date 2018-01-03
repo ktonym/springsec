@@ -11,6 +11,7 @@ import java.util.List;
 public interface ClientRepo extends JpaRepository<Client,Long> {
 
     List<Client> findClientByClientNameLike(String searchStr);
+    List<Client> findClientsByClientNameIgnoreCaseContaining(String searchStr);
 
     Client findClientByPin(String pin);
 }

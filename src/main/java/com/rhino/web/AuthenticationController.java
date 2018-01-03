@@ -159,7 +159,7 @@ public class AuthenticationController extends AbstractHandler{
         if(tokenHelper.validateToken(request.token)){
             return ResponseEntity.ok(result);
         } else {
-            JsonErrorState jsonErrorState = new JsonErrorState("Something went wrong");
+            JsonErrorState jsonErrorState = new JsonErrorState("Invalid token");
             return ResponseEntity.status(401).body(jsonErrorState);
         }
 

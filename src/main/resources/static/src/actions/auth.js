@@ -1,5 +1,6 @@
 import * as types from "../types";
 import api from "../api";
+import setAuthorizationHeader from "../utils/setAuthorizationHeader";
 
 export const userLoggedIn = user => ({
     type: types.USER_LOGIN_SUCCEEDED,
@@ -21,11 +22,13 @@ export const loginReq = (credentials) => dispatch =>
     api.user.login(credentials).then(user =>
     {
         localStorage.setItem('rhinoJWT',JSON.stringify(user)); //removed user.access_token
+        setAuthorizationHeader(user.access_token);
         dispatch(userLoggedIn(user));
     });
 
 export const logout = () => dispatch => {
     localStorage.removeItem("rhinoJWT");
+    setAuthorizationHeader();
     dispatch(userLoggedOut());
 };
 

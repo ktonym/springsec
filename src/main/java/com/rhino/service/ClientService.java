@@ -73,7 +73,13 @@ public class ClientService implements IClientService {
     @Override
     @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
     public Result<List<Client>> searchByName(String searchStr) {
-        List<Client> clients = repo.findClientByClientNameLike(searchStr);
+        System.out.println("Searching clients like:" + searchStr);
+//        List<Client> clients = repo.findClientByClientNameLike(searchStr);
+        List<Client> clients = repo.findClientsByClientNameIgnoreCaseContaining(searchStr);
+        for (Client client:
+             clients) {
+            System.out.println(client.getClientName());
+        }
         return ResultFactory.getSuccessResult(clients);
     }
 
