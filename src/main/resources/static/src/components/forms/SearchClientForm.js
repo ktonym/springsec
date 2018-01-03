@@ -14,7 +14,6 @@ class SearchClientForm extends Component{
 
     onSearchChange = (e, data) => {
         clearTimeout(this.timer);
-        console.log(data.searchQuery);
         this.setState({
             query: data.searchQuery
         });
@@ -22,7 +21,6 @@ class SearchClientForm extends Component{
     };
     
     fetchOptions = () => {
-        // debugger;
         if(!this.state.query) return;
         this.setState({ loading: true});
         //searchClient(this.state.query);
@@ -31,7 +29,7 @@ class SearchClientForm extends Component{
             .then(clients => {
                 const options = [];
                 const clientsHash = {};
-                clients.forEach(client => {
+                clients.data.forEach(client => {
                     clientsHash[client.clientId] = client;
                     options.push({
                         key: client.clientId,
