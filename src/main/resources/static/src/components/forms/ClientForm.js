@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import PropTypes from "prop-types";
-import {Form,Button,Message} from "semantic-ui-react";
+import {Form,Button,Message,Segment,Grid} from "semantic-ui-react";
 import InlineError from "../messages/InlineError";
 
 
@@ -17,9 +17,25 @@ class ClientForm extends Component{
         errors: {}
     };
 
+    componentWillReceiveProps(props){
+        this.setState({
+            data:{
+                clientId: props.client.clientId,
+                clientName: props.client.clientName,
+                pin: props.client.pin,
+                joinDate: props.client.joinDate
+            }
+        });
+    }
+
     onChange = e => this.setState({
         data:   { ...this.state.data,[e.target.name]: e.target.value }
     });
+
+    // for number fields
+    /*onChangeNumber = e => this.setState({
+        data:   { ...this.state.data,[e.target.name]: parseInt(e.target.value,10) }
+    });*/
 
     onSubmit = e => {
         e.preventDefault();
@@ -45,51 +61,73 @@ class ClientForm extends Component{
     render(){
         const {data,errors,loading} = this.state;
         return (
-            <Form onSubmit={this.onSubmit} loading={loading}>
-                {errors.status &&
-                    <Message negative>
-                        <Message.Header>Something went wrong</Message.Header>
-                        <p>{errors.message}</p>
-                    </Message>
-                }
-
-                <Form.Field error={!!errors.clientId}>
-                    <label htmlFor="email">clientId</label>
-                    <input
-                        type="numberfield" id="clientId" name="clientId" placeholder="clientId"
-                        value={data.clientId}
-                        onChange={this.onChange}
-                    />
-                </Form.Field>
-                <Form.Field error={!!errors.clientName}>
-                    <label htmlFor="email">clientName</label>
-                    <input
-                        type="textfield" id="clientName" name="clientName" placeholder="clientName"
-                        value={data.clientName}
-                        onChange={this.onChange}
-                    />
-                </Form.Field>
-                { errors.clientName && <InlineError text={errors.clientName} /> }
-                <Form.Field error={!!errors.pin}>
-                    <label htmlFor="email">pin</label>
-                    <input
-                        type="text" id="pin" name="pin" placeholder="pin"
-                        value={data.pin}
-                        onChange={this.onChange}
-                    />
-                </Form.Field>
-                { errors.pin && <InlineError text={errors.pin} /> }
-                <Form.Field error={!!errors.joinDate}>
-                    <label htmlFor="email">joinDate</label>
-                    <input
-                        type="datefield" id="joinDate" name="joinDate" placeholder="joinDate"
-                        value={data.joinDate}
-                        onChange={this.onChange}
-                    />
-                </Form.Field>
-                { errors.joinDate && <InlineError text={errors.joinDate} /> }
-                <Button primary>ClientForm</Button>
-            </Form>
+            <Segment>
+                <Form onSubmit={this.onSubmit} loading={loading}>
+                        {errors.status &&
+                            <Message negative>
+                                <Message.Header>Something went wrong</Message.Header>
+                                <p>{errors.message}</p>
+                            </Message>
+                        }
+                    <Grid columns={2} fluid stackable>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Form.Field error={!!errors.clientId}>
+                                    <label htmlFor="email">Client Id</label>
+                                    <input
+                                        type="number" id="clientId" name="clientId" placeholder="clientId"
+                                        value={data.clientId}
+                                        onChange={this.onChange}
+                                    />
+                                </Form.Field>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Form.Field error={!!errors.clientName}>
+                                    <label htmlFor="email">Name</label>
+                                    <input
+                                        type="text" id="clientName" name="clientName" placeholder="clientName"
+                                        value={data.clientName}
+                                        onChange={this.onChange}
+                                    />
+                                </Form.Field>
+                                { errors.clientName && <InlineError text={errors.clientName} /> }
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Form.Field error={!!errors.pin}>
+                                    <label htmlFor="email">PIN</label>
+                                    <input
+                                        type="text" id="pin" name="pin" placeholder="pin"
+                                        value={data.pin}
+                                        onChange={this.onChange}
+                                    />
+                                </Form.Field>
+                                { errors.pin && <InlineError text={errors.pin} /> }
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Form.Field error={!!errors.joinDate}>
+                                    <label htmlFor="email">Date Joined</label>
+                                    <input
+                                        type="date" id="joinDate" name="joinDate" placeholder="joinDate"
+                                        value={data.joinDate}
+                                        onChange={this.onChange}
+                                    />
+                                </Form.Field>
+                                { errors.joinDate && <InlineError text={errors.joinDate} /> }
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Button secondary>Cancel</Button>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Button primary>Save</Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Form>
+            </Segment>
         );
     }
 }
