@@ -8,8 +8,9 @@ export default {
         changePassword: data => axios.post("/auth/change_password",data)
     },
     client: {
-        create: (data) => axios.post("/client/create", data).then(res => res.data),
-        search: (query) => axios.get("/client/search?q=test")
-            .then(res => res.data)
+        create: (client) => axios.post("/client/create", client).then(res => res.data),
+        search: (query) => axios.get(`/client/search?q=${query}`)
+            .then(res => res.data),
+        getAll: () => axios.get("/client/getAll").then(res => res.data)
     }
 };

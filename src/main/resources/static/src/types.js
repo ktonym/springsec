@@ -6,3 +6,4 @@ export const ADD_CLIENT = "ADD_CLIENT";
 export const DELETE_CLIENT = "DELETE_CLIENT";
 export const CLIENT_ADDED = "CLIENT_ADDED";
 export const CLIENT_FAILED = "CLIENT_FAILED";
+export const CLIENTS_FETCHED = "CLIENTS_FETCHED";

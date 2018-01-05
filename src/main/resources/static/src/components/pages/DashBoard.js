@@ -4,8 +4,12 @@ import {connect} from "react-redux";
 //import {Message} from "semantic-ui-react";
 import { allClientsSelector } from "../../reducers/clients";
 import AddClientCtA from "../ctas/AddClientCtA";
+import { fetchClients } from "../../actions/client";
 
 class DashBoard extends Component{
+    componentDidMount = () => this.onInit(this.props);
+
+    onInit = (props) => props.fetchClients;
     render(){
         const {clients} = this.props;
         return (
@@ -23,7 +27,8 @@ const mapStateToProps = (state) => ({
 DashBoard.propTypes = {
     clients: PropTypes.arrayOf(PropTypes.shape({
             clientName: PropTypes.string.isRequired
-    }).isRequired).isRequired
+    }).isRequired).isRequired,
+    fetchClients: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(DashBoard);
+export default connect(mapStateToProps,{fetchClients})(DashBoard);

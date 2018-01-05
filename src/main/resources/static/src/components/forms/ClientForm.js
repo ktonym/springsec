@@ -69,7 +69,7 @@ class ClientForm extends Component{
                                 <p>{errors.message}</p>
                             </Message>
                         }
-                    <Grid columns={2} fluid stackable>
+                    <Grid columns={2} stackable>
                         <Grid.Row>
                             <Grid.Column>
                                 <Form.Field error={!!errors.clientId}>

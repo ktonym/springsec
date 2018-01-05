@@ -3,12 +3,15 @@ import { createSelector } from "reselect";
 
 export default function clients(state = {}, action = {}) {
     switch (action.type){
+        case types.CLIENT_ADDED:
+        case types.CLIENTS_FETCHED:
+            return { ...state, ...action.data.entities.clients };
         case types.ADD_CLIENT:
             let newClient = Object.assign({}, action.data);
             return state ? state.concat([newClient]) : [newClient];
-        case types.CLIENT_ADDED:
+        /*case types.CLIENT_ADDED:
             let addedClient = Object.assign({}, action.data);
-            return state ? state.concat([addedClient]) : [addedClient];
+            return state ? state.concat([addedClient]) : [addedClient];*/
         case types.CLIENT_FAILED:
             return state;
         default:
