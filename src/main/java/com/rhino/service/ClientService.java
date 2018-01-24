@@ -28,6 +28,7 @@ public class ClientService implements IClientService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Result<Client> create(String clientName, String pin, LocalDate joinDate) {
 
+        System.out.println("clientName,pin : " + clientName + ", " + pin );
         if(checkStringIsNotEmpty(clientName) && checkStringIsNotEmpty(pin) ){
             Client clientByPIN = repo.findClientByPin(pin);
             if(clientByPIN != null){
@@ -73,13 +74,8 @@ public class ClientService implements IClientService {
     @Override
     @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
     public Result<List<Client>> searchByName(String searchStr) {
-        System.out.println("Searching clients like:" + searchStr);
-//        List<Client> clients = repo.findClientByClientNameLike(searchStr);
+        //List<Client> clients = repo.findClientByClientNameLike(searchStr);
         List<Client> clients = repo.findClientsByClientNameIgnoreCaseContaining(searchStr);
-        for (Client client:
-             clients) {
-            System.out.println(client.getClientName());
-        }
         return ResultFactory.getSuccessResult(clients);
     }
 

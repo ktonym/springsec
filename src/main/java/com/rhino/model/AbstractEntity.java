@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class AbstractEntity implements JsonItem,Serializable{
 
-    static final DateTimeFormatter DATE_FORMATTER_yyyyMMdd = DateTimeFormatter.ofPattern("yyyyMMdd");
+    static final DateTimeFormatter DATE_FORMATTER_yyyyMMdd = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     static final DateTimeFormatter DATE_FORMATTER_yyyyMMddHHmm = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm");
 

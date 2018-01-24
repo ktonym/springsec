@@ -25,6 +25,8 @@ public class ClientController extends AbstractHandler {
     @PostMapping(value = "/create")
     @ResponseBody
     public String create(HttpServletRequest request, @RequestBody ClientDTO clientCreator ){
+//        System.out.println("Create endpoint");
+//        System.out.println("ClientDTO :" + clientCreator.clientName + " pin: " + clientCreator.pin);
         Result<Client> ar = service.create(clientCreator.clientName,clientCreator.pin, clientCreator.joinDate);
         if(ar.isSuccess()){
             return getJsonSuccessData(ar.getData());

@@ -7,22 +7,30 @@ import LoginPage from "./components/pages/LoginPage";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import ResetPasswordPage from "./components/pages/ResetPasswordPage";
 import NewClientPage from "./components/pages/NewClientPage";
+import ClientPage from "./components/pages/ClientPage";
 import DashBoard from "./components/pages/DashBoard";
 import UserRoute from "./components/routes/UserRoute";
 import GuestRoute from "./components/routes/GuestRoute";
 import TopNavigation from "./components/navigation/TopNavigation";
 
-const App = ({location,isAuthenticated}) =>
-    <div className="ui container">
-        {isAuthenticated && <TopNavigation />}
-        <Route location={location} path="/" exact component={HomePage}/>
-        <GuestRoute location={location} path="/login" exact component={LoginPage}/>
-        <GuestRoute location={location} path="/forgot_password" exact component={ForgotPassword}/>
-        <GuestRoute location={location} path="/reset_password/:token" exact component={ResetPasswordPage}/>
-        <UserRoute location={location} path="/dashboard" exact component={DashBoard}/>
-        <UserRoute location={location} path="/clients/new" exact component={NewClientPage}/>
-    </div>;
 
+class App extends React.Component{
+    render(){
+        const {location,isAuthenticated} = this.props;
+        return (
+            <div className="ui container">
+                {isAuthenticated && <TopNavigation />}
+                <Route location={location} path="/" exact component={HomePage}/>
+                <GuestRoute location={location} path="/login" exact component={LoginPage}/>
+                <GuestRoute location={location} path="/forgot_password" exact component={ForgotPassword}/>
+                <GuestRoute location={location} path="/reset_password/:token" exact component={ResetPasswordPage}/>
+                <UserRoute location={location} path="/dashboard" exact component={DashBoard}/>
+                <UserRoute location={location} path="/clients/new" exact component={NewClientPage}/>
+                <UserRoute location={location} path="/clients" exact component={ClientPage}/>
+            </div>
+        );
+    }
+}
 
 App.propTypes = {
     location: PropTypes.shape({
