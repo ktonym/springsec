@@ -6,26 +6,24 @@ import com.rhino.common.DeviceProvider;
 import com.rhino.model.JsonErrorState;
 import com.rhino.model.User;
 import com.rhino.model.UserTokenState;
-import com.rhino.service.CustomUserDetailsService;
-import com.rhino.service.IMailSenderService;
 import com.rhino.service.IUserService;
-import com.rhino.service.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.json.JsonObject;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
@@ -64,32 +62,45 @@ public class AuthenticationController extends AbstractHandler{
                                                        HttpServletResponse response, Device device
     ) throws AuthenticationException, IOException{
 
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(//username,password)
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword())
-        );
+        try {
 
-        // Inject into security context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            final Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(//username,password)
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword())
+            );
 
-        // token creation
-        User user = (User)authentication.getPrincipal();
-        String jws = tokenHelper.generateToken( user.getUsername(), device);
-        int expiresIn = tokenHelper.getExpiredIn(device);
-        String email = user.getEmail();
+            // Inject into security context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Return the token
-        //return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
+            // token creation
+            User user = (User)authentication.getPrincipal();
+            String jws = tokenHelper.generateToken( user.getUsername(), device);
+            int expiresIn = tokenHelper.getExpiredIn(device);
+            String email = user.getEmail();
 
-        Map<String,Object> result = new HashMap<>();
-        result.put("user",new UserTokenState(jws,expiresIn,email));
-        /*try {
-            mailSender.sendEmail("ktonym@gmail.com","Hi there!!","Testing");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-        return ResponseEntity.accepted().body(result);
+            // Return the token
+            //return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
+
+            Map<String,Object> result = new HashMap<>();
+            result.put("user",new UserTokenState(jws,expiresIn,email));
+            /*try {
+                mailSender.sendEmail("ktonym@gmail.com","Hi there!!","Testing");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+            return ResponseEntity.accepted().body(result);
+        } catch (BadCredentialsException bce){
+            Map<String,Object> result = new HashMap<>();
+            result.put("success",false);
+            result.put("msg","Your credentials didn't work");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+        } catch (RuntimeException e){
+            Map<String,Object> result = new HashMap<>();
+            result.put("success",false);
+            result.put("msg",e.getMessage());
+            return ResponseEntity.status(500).body(result);
+        }
 
     }
 

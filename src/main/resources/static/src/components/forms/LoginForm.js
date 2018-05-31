@@ -22,6 +22,8 @@ class LoginForm extends Component{
     onSubmit = e => {
         const errors = this.validate(this.state.data);
         const {data} = this.state;
+        console.info("From LoginForm");
+        console.log(data);
         e.preventDefault();
         this.setState({errors});
         if(Object.keys(errors).length === 0){
@@ -43,7 +45,7 @@ class LoginForm extends Component{
     render(){
         const {data,errors,loading} = this.state;
         return (
-            // Testing with onSoumettre instead of onSubmit
+
             <Form onSubmit={this.onSubmit} loading={loading}>
                 {errors.status &&
                     <Message negative>

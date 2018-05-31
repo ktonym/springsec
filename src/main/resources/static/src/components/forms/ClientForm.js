@@ -20,6 +20,7 @@ class ClientForm extends Component{
     componentWillReceiveProps(props){
         this.setState({
             data:{
+
                 clientId: props.client.clientId,
                 clientName: props.client.clientName,
                 pin: props.client.pin,

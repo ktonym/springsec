@@ -34,7 +34,7 @@ class ResetPasswordPage extends Component{
     }
 }
 
-ResetPasswordForm.propTypes = {
+ResetPasswordPage.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
             token: PropTypes.string.isRequired
